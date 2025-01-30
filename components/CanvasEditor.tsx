@@ -16,66 +16,49 @@ interface Rect {
 
 interface CanvasEditorProps {
   imageUrl: string;
+  rectPreset: Rect
 }
 
-export default function CanvasEditor({imageUrl}: CanvasEditorProps) {
+export default function CanvasEditor({imageUrl, rectPreset}: CanvasEditorProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [image, setImage] = useState<HTMLImageElement | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState<Point | null>(null);
   const [activeHandle, setActiveHandle] = useState<string | null>(null);
 
-  // State for the crop rectangle
-  const [cropRect, setCropRect] = useState<Rect>({
-    x: 100,
-    y: 100,
-    width: 400,
-    height: 300,
-  });
-
-  // State for the image
+  const [cropRect, setCropRect] = useState<Rect>(rectPreset);
   const [imageRect, setImageRect] = useState<Rect>({
     x: 0,
     y: 0,
     width: 0,
     height: 0,
   });
-
-  // Load and setup image
   useEffect(() => {
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.src = imageUrl;
     img.onload = () => {
       setImage(img);
-      // Center the image within the crop rectangle
-      const cropAspectRatio = cropRect.width / cropRect.height;
+      const cropAspectRatio = rectPreset.width / rectPreset.height;
       const imgAspectRatio = img.width / img.height;
-
       let newWidth, newHeight;
-
       if (imgAspectRatio > cropAspectRatio) {
-        // Image is wider than crop rectangle
-        newWidth = cropRect.width;
+        newWidth = rectPreset.width;
         newHeight = newWidth / imgAspectRatio;
       } else {
-        // Image is taller than crop rectangle
-        newHeight = cropRect.height;
+        newHeight = rectPreset.height;
         newWidth = newHeight * imgAspectRatio;
       }
-
-      console.log("Setting image", newHeight, newWidth);
-
       setImageRect({
-        x: cropRect.x + (cropRect.width - newWidth) / 2,
-        y: cropRect.y + (cropRect.height - newHeight) / 2,
+        x: rectPreset.x + (rectPreset.width - newWidth) / 2,
+        y: rectPreset.y + (rectPreset.height - newHeight) / 2,
         width: newWidth,
         height: newHeight,
       });
+      setCropRect(rectPreset)
     };
-  }, [imageUrl]);
+  }, [imageUrl, rectPreset]);
 
-  // Draw function
   const draw = () => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
@@ -113,7 +96,6 @@ export default function CanvasEditor({imageUrl}: CanvasEditorProps) {
     drawHandles(ctx);
   };
 
-  // Draw handles for both crop rectangle and image
   const drawHandles = (ctx: CanvasRenderingContext2D) => {
     const edgeHandles = [
       {x: cropRect.x + cropRect.width / 2, y: cropRect.y, cursor: "ns-resize"}, // top
@@ -371,7 +353,6 @@ export default function CanvasEditor({imageUrl}: CanvasEditorProps) {
     setActiveHandle(null);
   };
 
-  // Helper function to determine which handle is being clicked
   const getActiveHandle = (x: number, y: number): string | null => {
     const handleRadius = 6;
 

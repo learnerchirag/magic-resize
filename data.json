@@ -1,0 +1,268 @@
+{
+  "size_presets": [
+    {
+      "name": "Square",
+      "aspect_ratio_label": "1:1",
+      "aspect_ratio": 1,
+      "width": 1024,
+      "height": 1024,
+      "icon_url": ""
+    },
+    {
+      "name": "Landscape",
+      "aspect_ratio_label": "5:3",
+      "aspect_ratio": 1.67,
+      "width": 1280,
+      "height": 768,
+      "icon_url": ""
+    },
+    {
+      "name": "Portrait",
+      "aspect_ratio_label": "3:5",
+      "aspect_ratio": 0.6,
+      "width": 768,
+      "height": 1280,
+      "icon_url": ""
+    },
+    {
+      "name": "Instagram Post",
+      "aspect_ratio_label": "1:1",
+      "aspect_ratio": 1,
+      "width": 1024,
+      "height": 1024,
+      "icon_url": "https://meta.magicstudio.com/assets/icons/instagram.svg"
+    },
+    {
+      "name": "Instagram Story",
+      "aspect_ratio_label": "9:16",
+      "aspect_ratio": 0.57,
+      "width": 768,
+      "height": 1344,
+      "icon_url": "https://meta.magicstudio.com/assets/icons/instagram.svg"
+    },
+    {
+      "name": "Instagram Reel",
+      "aspect_ratio_label": "9:16",
+      "aspect_ratio": 0.57,
+      "width": 768,
+      "height": 1344,
+      "icon_url": "https://meta.magicstudio.com/assets/icons/instagram.svg"
+    },
+    {
+      "name": "Tiktok Post",
+      "aspect_ratio_label": "9:16",
+      "aspect_ratio": 0.57,
+      "width": 768,
+      "height": 1344,
+      "icon_url": "https://meta.magicstudio.com/assets/icons/tiktok.svg"
+    },
+    {
+      "name": "Tiktok Thumbnail",
+      "aspect_ratio_label": "3:4",
+      "aspect_ratio": 0.75,
+      "width": 1344,
+      "height": 1792,
+      "icon_url": "https://meta.magicstudio.com/assets/icons/tiktok.svg"
+    },
+    {
+      "name": "Youtube Thumbnail",
+      "aspect_ratio_label": "16:9",
+      "aspect_ratio": 1.78,
+      "width": 1408,
+      "height": 792,
+      "icon_url": "https://meta.magicstudio.com/assets/icons/youtube.svg"
+    },
+    {
+      "name": "Youtube Banner",
+      "aspect_ratio_label": "16:9",
+      "aspect_ratio": 1.78,
+      "width": 1408,
+      "height": 792,
+      "icon_url": "https://meta.magicstudio.com/assets/icons/youtube.svg"
+    },
+    {
+      "name": "Facebook Ad",
+      "aspect_ratio_label": "1.91:1",
+      "aspect_ratio": 1.91,
+      "width": 1344,
+      "height": 704,
+      "icon_url": "https://meta.magicstudio.com/assets/icons/facebook.svg"
+    },
+    {
+      "name": "Facebook Marketplace",
+      "aspect_ratio_label": "1:1",
+      "aspect_ratio": 1,
+      "width": 1024,
+      "height": 1024,
+      "icon_url": "https://meta.magicstudio.com/assets/icons/facebook.svg"
+    },
+    {
+      "name": "Facebook Post",
+      "aspect_ratio_label": "1:1",
+      "aspect_ratio": 1,
+      "width": 1024,
+      "height": 1024,
+      "icon_url": "https://meta.magicstudio.com/assets/icons/facebook.svg"
+    },
+    {
+      "name": "Facebook Cover",
+      "aspect_ratio_label": "5:2",
+      "aspect_ratio": 2.5,
+      "width": 1600,
+      "height": 640,
+      "icon_url": "https://meta.magicstudio.com/assets/icons/facebook.svg"
+    },
+    {
+      "name": "Shopify Square",
+      "aspect_ratio_label": "1:1",
+      "aspect_ratio": 1,
+      "width": 1024,
+      "height": 1024,
+      "icon_url": "https://meta.magicstudio.com/assets/icons/shopify.svg"
+    },
+    {
+      "name": "Shopify Landscape",
+      "aspect_ratio_label": "10:9",
+      "aspect_ratio": 1.11,
+      "width": 1152,
+      "height": 1032,
+      "icon_url": "https://meta.magicstudio.com/assets/icons/shopify.svg"
+    },
+    {
+      "name": "Shopify Portrait",
+      "aspect_ratio_label": "4:5",
+      "aspect_ratio": 0.8,
+      "width": 832,
+      "height": 1040,
+      "icon_url": "https://meta.magicstudio.com/assets/icons/shopify.svg"
+    },
+    {
+      "name": "Pinterest",
+      "aspect_ratio_label": "2:3",
+      "aspect_ratio": 0.67,
+      "width": 896,
+      "height": 1344,
+      "icon_url": "https://meta.magicstudio.com/assets/icons/pinterest.svg"
+    },
+    {
+      "name": "eBay",
+      "aspect_ratio_label": "1:1",
+      "aspect_ratio": 1,
+      "width": 1024,
+      "height": 1024,
+      "icon_url": "https://meta.magicstudio.com/assets/icons/ebay.svg"
+    },
+    {
+      "name": "Amazon",
+      "aspect_ratio_label": "1:1",
+      "aspect_ratio": 1,
+      "width": 1024,
+      "height": 1024,
+      "icon_url": "https://meta.magicstudio.com/assets/icons/amazon.svg"
+    },
+    {
+      "name": "Etsy",
+      "aspect_ratio_label": "4:3",
+      "aspect_ratio": 1.33,
+      "width": 1216,
+      "height": 912,
+      "icon_url": "https://meta.magicstudio.com/assets/icons/etsy.svg"
+    },
+    {
+      "name": "Poshmark",
+      "aspect_ratio_label": "1:1",
+      "aspect_ratio": 1,
+      "width": 1024,
+      "height": 1024,
+      "icon_url": "https://meta.magicstudio.com/assets/icons/posh.svg"
+    },
+    {
+      "name": "Logo",
+      "aspect_ratio_label": "1:1",
+      "aspect_ratio": 1,
+      "width": 1024,
+      "height": 1024,
+      "icon_url": ""
+    },
+    {
+      "name": "Twitter Post",
+      "aspect_ratio_label": "2:1",
+      "aspect_ratio": 2,
+      "width": 1408,
+      "height": 704,
+      "icon_url": ""
+    },
+    {
+      "name": "Desktop Wallpaper",
+      "aspect_ratio_label": "16:9",
+      "aspect_ratio": 1.78,
+      "width": 1408,
+      "height": 792,
+      "icon_url": ""
+    },
+    {
+      "name": "1:2",
+      "aspect_ratio_label": "1:1",
+      "aspect_ratio": 0.5,
+      "width": 704,
+      "height": 1408,
+      "icon_url": ""
+    },
+    {
+      "name": "2:3",
+      "aspect_ratio_label": "2:3",
+      "aspect_ratio": 0.67,
+      "width": 896,
+      "height": 1344,
+      "icon_url": ""
+    },
+    {
+      "name": "9:16",
+      "aspect_ratio_label": "9:16",
+      "aspect_ratio": 0.57,
+      "width": 768,
+      "height": 1344,
+      "icon_url": ""
+    },
+    {
+      "name": "2:1",
+      "aspect_ratio_label": "2:1",
+      "aspect_ratio": 2,
+      "width": 1408,
+      "height": 704,
+      "icon_url": ""
+    },
+    {
+      "name": "3:2",
+      "aspect_ratio_label": "3:2",
+      "aspect_ratio": 1.5,
+      "width": 1152,
+      "height": 768,
+      "icon_url": ""
+    },
+    {
+      "name": "16:9",
+      "aspect_ratio_label": "16:9",
+      "aspect_ratio": 1.78,
+      "width": 1408,
+      "height": 792,
+      "icon_url": ""
+    },
+    {
+      "name": "5:2",
+      "aspect_ratio_label": "5:2",
+      "aspect_ratio": 2.5,
+      "width": 1600,
+      "height": 640,
+      "icon_url": ""
+    },
+    {
+      "name": "3:1",
+      "aspect_ratio_label": "3:1",
+      "aspect_ratio": 3,
+      "width": 1728,
+      "height": 576,
+      "icon_url": ""
+    }
+  ]
+}

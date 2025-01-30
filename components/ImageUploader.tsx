@@ -59,7 +59,7 @@ export default function ImageUploader({ onUpload }: ImageUploaderProps) {
       <input type="file" accept="image/*" className="hidden" onChange={handleFileInput} id="file-upload" />
       <label
         htmlFor="file-upload"
-        className="mt-4 inline-block px-4 py-2 bg-primary text-white rounded-md cursor-pointer"
+        className="mt-4 inline-block px-4 py-2 bg-primary text-black rounded-md cursor-pointer"
       >
         Select Image
       </label>
