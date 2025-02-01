@@ -13,12 +13,11 @@ export default function PresetSelector({ onPresetSubmit }: PresetSelectorProps) 
   const [selectedPreset, setSelectedPreset] = useState<string | null>(null)
 
   useEffect(() => {
-    // fetch("https://ai-api.magicstudio.com/api/magic-resize/size-presets", { mode: 'no-cors' })
-    //   .then((response) => response.json())
-    //   .then((data) => setPresets(data.size_presets))
-    //   .catch((error) => console.error("Error fetching presets:", error))
+    fetch("https://ai-api.magicstudio.com/api/magic-resize/size-presets")
+      .then((response) => response.json())
+      .then((data) => setPresets(data.size_presets))
+      .catch((error) => console.error("Error fetching presets:", error))
 
-    setPresets(data.size_presets)
   }, [])
 
   const handleSubmit = () => {

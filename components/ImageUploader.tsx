@@ -47,7 +47,7 @@ export default function ImageUploader({ onUpload }: ImageUploaderProps) {
 
   return (
     <div
-      className={`border-2 border-dashed rounded-lg p-8 text-center ${
+      className={`border-2 border-dashed rounded-lg p-8 text-center mx-8 ${
         dragging ? "border-primary bg-primary/10" : "border-gray-300"
       }`}
       onDragOver={handleDragOver}

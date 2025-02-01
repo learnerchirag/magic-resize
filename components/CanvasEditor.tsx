@@ -1,6 +1,8 @@
 "use client";
 
 import {useEffect, useRef, useState} from "react";
+import {Button} from "./ui/button";
+import {CanvasData} from "@/types/canvas";
 
 interface Point {
   x: number;
@@ -16,10 +18,15 @@ interface Rect {
 
 interface CanvasEditorProps {
   imageUrl: string;
-  rectPreset: Rect
+  rectPreset: Rect;
+  onSubmit: (imageUrl: string, data: CanvasData) => void;
 }
 
-export default function CanvasEditor({imageUrl, rectPreset}: CanvasEditorProps) {
+export default function CanvasEditor({
+  imageUrl,
+  rectPreset,
+  onSubmit,
+}: CanvasEditorProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [image, setImage] = useState<HTMLImageElement | null>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -55,7 +62,7 @@ export default function CanvasEditor({imageUrl, rectPreset}: CanvasEditorProps) 
         width: newWidth,
         height: newHeight,
       });
-      setCropRect(rectPreset)
+      setCropRect(rectPreset);
     };
   }, [imageUrl, rectPreset]);
 
@@ -96,28 +103,52 @@ export default function CanvasEditor({imageUrl, rectPreset}: CanvasEditorProps) 
     drawHandles(ctx);
   };
 
-  const drawHandles = (ctx: CanvasRenderingContext2D) => {
-    const edgeHandles = [
-      {x: cropRect.x + cropRect.width / 2, y: cropRect.y, cursor: "ns-resize"}, // top
+  const getEdgeHandles = () => {
+    return [
+      {
+        x: cropRect.x + cropRect.width / 2,
+        y: cropRect.y,
+        cursor: "ns-resize",
+        handle: "top",
+      }, // top
       {
         x: cropRect.x + cropRect.width,
         y: cropRect.y + cropRect.height / 2,
         cursor: "ew-resize",
+        handle: "right",
       }, // right
       {
         x: cropRect.x + cropRect.width / 2,
         y: cropRect.y + cropRect.height,
         cursor: "ns-resize",
+        handle: "bottom",
       }, // bottom
-      {x: cropRect.x, y: cropRect.y + cropRect.height / 2, cursor: "ew-resize"}, // left
+      {
+        x: cropRect.x,
+        y: cropRect.y + cropRect.height / 2,
+        cursor: "ew-resize",
+        handle: "left",
+      }, // left
     ];
+  };
 
-    const cornerHandles = [
-      {x: imageRect.x, y: imageRect.y}, // top-left
-      {x: imageRect.x + imageRect.width, y: imageRect.y}, // top-right
-      {x: imageRect.x + imageRect.width, y: imageRect.y + imageRect.height}, // bottom-right
-      {x: imageRect.x, y: imageRect.y + imageRect.height}, // bottom-left
+  const getCornerHandles = () => {
+    return [
+      {x: imageRect.x, y: imageRect.y, handle: "image-tl"}, // top-left
+      {x: imageRect.x + imageRect.width, y: imageRect.y, handle: "image-tr"}, // top-right
+      {
+        x: imageRect.x + imageRect.width,
+        y: imageRect.y + imageRect.height,
+        handle: "image-br",
+      }, // bottom-right
+      {x: imageRect.x, y: imageRect.y + imageRect.height, handle: "image-bl"}, // bottom-left
     ];
+  };
+
+  const drawHandles = (ctx: CanvasRenderingContext2D) => {
+    const edgeHandles = getEdgeHandles();
+
+    const cornerHandles = getCornerHandles();
 
     // Draw edge handles
     ctx.fillStyle = "#4466ff";
@@ -138,11 +169,12 @@ export default function CanvasEditor({imageUrl, rectPreset}: CanvasEditorProps) 
     });
 
     // Draw edges connecting corner handles to crop rectangle edges if image is out of bounds
-    if (imageRect.x < cropRect.x || 
-        imageRect.x + imageRect.width > cropRect.x + cropRect.width || 
-        imageRect.y < cropRect.y || 
-        imageRect.y + imageRect.height > cropRect.y + cropRect.height) {
-      
+    if (
+      imageRect.x < cropRect.x ||
+      imageRect.x + imageRect.width > cropRect.x + cropRect.width ||
+      imageRect.y < cropRect.y ||
+      imageRect.y + imageRect.height > cropRect.y + cropRect.height
+    ) {
       ctx.strokeStyle = "#000";
       ctx.lineWidth = 1;
 
@@ -179,9 +211,15 @@ export default function CanvasEditor({imageUrl, rectPreset}: CanvasEditorProps) 
         ctx.lineTo(imageRect.x + imageRect.width, imageRect.y);
         ctx.stroke();
         ctx.moveTo(imageRect.x + imageRect.width, imageRect.y);
-        ctx.lineTo(imageRect.x + imageRect.width, imageRect.y + imageRect.height);
+        ctx.lineTo(
+          imageRect.x + imageRect.width,
+          imageRect.y + imageRect.height
+        );
         ctx.stroke();
-        ctx.moveTo(imageRect.x + imageRect.width, imageRect.y + imageRect.height);
+        ctx.moveTo(
+          imageRect.x + imageRect.width,
+          imageRect.y + imageRect.height
+        );
         ctx.lineTo(cropRect.x + cropRect.width, imageRect.y + imageRect.height);
         ctx.stroke();
       }
@@ -192,9 +230,15 @@ export default function CanvasEditor({imageUrl, rectPreset}: CanvasEditorProps) 
         ctx.lineTo(imageRect.x, imageRect.y + imageRect.height);
         ctx.stroke();
         ctx.moveTo(imageRect.x, imageRect.y + imageRect.height);
-        ctx.lineTo(imageRect.x + imageRect.width, imageRect.y + imageRect.height);
+        ctx.lineTo(
+          imageRect.x + imageRect.width,
+          imageRect.y + imageRect.height
+        );
         ctx.stroke();
-        ctx.moveTo(imageRect.x + imageRect.width, imageRect.y + imageRect.height);
+        ctx.moveTo(
+          imageRect.x + imageRect.width,
+          imageRect.y + imageRect.height
+        );
         ctx.lineTo(imageRect.x + imageRect.width, cropRect.y + cropRect.height);
         ctx.stroke();
       }
@@ -219,12 +263,7 @@ export default function CanvasEditor({imageUrl, rectPreset}: CanvasEditorProps) 
     }
 
     // Check if clicking inside crop rectangle for moving
-    if (
-      x >= cropRect.x &&
-      x <= cropRect.x + cropRect.width &&
-      y >= cropRect.y &&
-      y <= cropRect.y + cropRect.height
-    ) {
+    if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
       setIsDragging(true);
       setDragStart({x, y});
     }
@@ -253,18 +292,26 @@ export default function CanvasEditor({imageUrl, rectPreset}: CanvasEditorProps) 
       y >= imageRect.y &&
       y <= imageRect.y + imageRect.height;
 
+    const isOverCorner = getCornerHandles().find((handle) => {
+      const distance = Math.sqrt(
+        Math.pow(x - handle.x, 2) + Math.pow(y - handle.y, 2)
+      );
+      return distance <= 6;
+    });
 
-    const isOverCorner = (isOverCropRect && (x < cropRect.x + 10 || x > cropRect.x + cropRect.width - 10) && (y < cropRect.y + 10 || y > cropRect.y + cropRect.height - 10));
-      
+    const isOverEdgeHandle = getEdgeHandles().find((handle) => {
+      const distance = Math.sqrt(
+        Math.pow(x - handle.x, 2) + Math.pow(y - handle.y, 2)
+      );
+      return distance <= 6;
+    });
 
     // Change cursor style based on hover
-    if (isOverImage || isOverCorner) {
+    if (isOverEdgeHandle) {
+      canvas.style.cursor = isOverEdgeHandle.cursor;
+    } else if (isOverImage || isOverCorner) {
       canvas.style.cursor = "all-scroll"; // Cursor for image and corners of crop rectangle
-    } else if (isOverCropRect) {
-      canvas.style.cursor = "grab"; // Cursor for crop rectangle
-    } else {
-      canvas.style.cursor = "default"; // Default cursor
-    }
+    } else canvas.style.cursor = "grab"; // Cursor for crop rectangle
 
     if (isDragging && dragStart) {
       const dx = x - dragStart.x;
@@ -328,7 +375,7 @@ export default function CanvasEditor({imageUrl, rectPreset}: CanvasEditorProps) 
             x: prev.x + dx,
             y: prev.y + dy,
           }));
-        } else if (isOverCropRect) {
+        } else {
           // Handle moving crop rectangle and image together
           setCropRect((prev) => ({
             ...prev,
@@ -357,32 +404,10 @@ export default function CanvasEditor({imageUrl, rectPreset}: CanvasEditorProps) 
     const handleRadius = 6;
 
     // Check crop rectangle edge handles
-    const edgeHandles = [
-      {x: cropRect.x + cropRect.width / 2, y: cropRect.y, handle: "top"},
-      {
-        x: cropRect.x + cropRect.width,
-        y: cropRect.y + cropRect.height / 2,
-        handle: "right",
-      },
-      {
-        x: cropRect.x + cropRect.width / 2,
-        y: cropRect.y + cropRect.height,
-        handle: "bottom",
-      },
-      {x: cropRect.x, y: cropRect.y + cropRect.height / 2, handle: "left"},
-    ];
+    const edgeHandles = getEdgeHandles();
 
     // Check image corner handles
-    const cornerHandles = [
-      {x: imageRect.x, y: imageRect.y, handle: "image-tl"},
-      {x: imageRect.x + imageRect.width, y: imageRect.y, handle: "image-tr"},
-      {
-        x: imageRect.x + imageRect.width,
-        y: imageRect.y + imageRect.height,
-        handle: "image-br",
-      },
-      {x: imageRect.x, y: imageRect.y + imageRect.height, handle: "image-bl"},
-    ];
+    const cornerHandles = getCornerHandles();
 
     // Check edge handles
     for (const handle of edgeHandles) {
@@ -411,16 +436,66 @@ export default function CanvasEditor({imageUrl, rectPreset}: CanvasEditorProps) 
     draw();
   }, [cropRect, imageRect, image]);
 
+  const resizeAndSubmit = () => {
+    const sx = Math.max(0, cropRect.x - imageRect.x);
+    const sy = Math.max(0, cropRect.y - imageRect.y);
+    const ex = Math.min(
+      imageRect.x + imageRect.width,
+      cropRect.x + cropRect.width
+    );
+    const ey = Math.min(
+      imageRect.y + imageRect.height,
+      cropRect.y + cropRect.height
+    );
+    const croppedWidth = ex - Math.max(imageRect.x, cropRect.x);
+    const croppedHeight = ey - Math.max(imageRect.y, cropRect.y);
+
+
+    const canvas = document.createElement("canvas");
+    canvas.width = croppedWidth;
+    canvas.height = croppedHeight;
+    const ctx = canvas.getContext("2d");
+    if (!canvas || !ctx || !image) return;
+    ctx.drawImage(
+      image,
+      sx,
+      sy, // Source starting point within the image
+      croppedWidth,
+      croppedHeight, // Source dimensions to draw
+      0,
+      0, // Destination starting point within the canvas
+      croppedWidth,
+      croppedHeight // Destination dimensions within the canvas
+    );
+
+    const finalImageDataUrl = canvas.toDataURL("image/png");
+
+    onSubmit(finalImageDataUrl, {
+      left: Math.max(imageRect.x - cropRect.x, 0),
+      top: Math.max(imageRect.y - cropRect.y, 0),
+      right: cropRect.x + cropRect.width - ex,
+      bottom: cropRect.y + cropRect.height - ey,
+    });
+  };
+
   return (
-    <canvas
-      ref={canvasRef}
-      width={800}
-      height={600}
-      className="border border-gray-200 rounded-lg cursor-move"
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
-    />
+    <>
+      <canvas
+        ref={canvasRef}
+        width={window.innerWidth}
+        height={800}
+        className="rounded-lg cursor-move absolute"
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+      />
+      <Button
+        className="absolute z-10 bottom-2 right-2"
+        onClick={resizeAndSubmit}
+      >
+        Submit
+      </Button>
+    </>
   );
 }
